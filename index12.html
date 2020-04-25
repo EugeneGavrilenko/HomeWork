@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JAVASCRIPT HW12</title>
+</head>
+
+<body>
+    <script>
+        // ЗАДАНИЯ ДЛЯ РАЗМИНКИ!!!!!!)))
+
+        //1) Есть функция a! Пояснить почему при вызове функции b возьмется k из функции b! Ну и предложить решение чтобы брать k которое выше!
+        console.log('1 задание');
+        function a(arg) {
+            let k = 10;
+            function b() {
+                // let k = 20;  // при вызове возьмёт эту k потому что она идёт первая выше перед return. Закомментировав
+                return k;       // эту, возьмёт k выше, у родительской функции
+            }
+            const resultx = b() + arg;
+            return resultx;
+        }
+        console.log(a(5));
+
+        //2) Написать функцию которая принимает параметр num и вовращает новую функцию которая тоже принимет один параметр возвращает произведение!
+        // то num нужно замкнуть!
+        console.log('2 задание');
+        function mult(num) {
+            return function (num1) {
+                return num * num1;
+            }
+        }
+        const res1 = mult(5);
+        console.log(res1(10));
+
+        // 3) Есть функция counter!Пояснить почему res, res2 берут разные i с замыкания!
+        console.log('3 задание');
+        function counter() {
+            var i = 1;
+            return function () {
+                return i++;
+            };
+        }
+        const res = counter();  // res и res2 два независимых друг от друга счётчика.
+        console.log(res());     // Потому что созданы в разных лексических окружениях. Возвращённые из counter() функции,
+        console.log(res());     // res и res2, помнят через скрытое свойство Scope в каком лекс.окружении были созданы,
+        const res2 = counter(); // что и используеься для хранения значения счётчика.
+        console.log(res2());
+        console.log(res2());
+
+        //4) Есть функция с которую мы разбирали! Нужно переопредлить toString f чтобы не обращатся к свойству k, а после нажатия enter выводило результат!
+        console.log('4 задание');
+        function c(num) {
+            f.k = 0;
+            function f(num1) {
+                f.k += f.k ? num1 : num + num1;
+                return f;
+            }
+            return f;
+        }
+        let newC = c(5);
+        newC.toString = function () {
+            return this.k;
+        };
+        console.log(newC(6)(1).toString());
+        // с(5)(6)(1).k; // таким образом мы получали k которое хранит сумму!!
+        // с(5)(6)(5); // нужно чтобы в консоле показало не тело функции а результат то есть нужно переопределить toString
+
+
+        // 5) Разомнем мозги пишем собственный reduce!
+        console.log('5 задание');
+        function reduce(array, f) {
+            let prev = 0;
+            for (let i = 0; i < array.length; i++) {
+                prev = f(prev, array[i]);
+            }
+            return prev;
+        }
+        console.log(reduce([5, 2, 5, 1, 6, 3, 6], (prev, curr) => prev + curr));
+        // 6) Взял задачу с нета! Обьяснить почему первая выведет 10, а 2 остальные 0!
+        /*1)*/
+        function arrOfFunctions() {
+            var functions = [];
+            for (var i = 0; i < 10; i++) {
+                var f = function () {      //При вызове res99[0](), arrOfFunctions закончила свою работу с последним
+                    alert(i);              //значением i=10. В f нет локальной i, и будет её брать из внешнего лекс.окружения
+                };                         //В внешнем окружении i окажется из-за всплытия var.
+                functions.push(f);         // + редактор мне посказал, что i=10 берётся из замыкания :)
+            }
+            return functions;
+        }
+        var res99 = arrOfFunctions();
+        res99[0](); // стрелок выводит 10, а должен 0
+        // /*2*/
+        function arrOfFunctions() {
+            var functions = [];
+            for (var i = 0; i < 10; i++) {
+                (function (i) {              //Самовызывающаяся функция сработала, и за счёт того что в дочерней
+                    var f = function () {    //фукнции используем значение i, то она с памяти не удаляется
+                        alert(i);
+                    };
+                    functions.push(f);
+                })(i);
+            }
+            return functions;
+        }
+        var res98 = arrOfFunctions();
+        res98[0]();
+        //
+        /*3*/
+        function arrOfFunctions() {
+            var functions = [];
+            for (let i = 0; i < 10; i++) {   //Здесь противоположно первому случаю, при каждом срабатывании цикла
+                var f = function () {        //создаётся локальная i и своё лекс.окружение.
+                    alert(i);
+                };
+                functions.push(f);
+            }
+            return functions;
+        }
+        var res97 = arrOfFunctions();
+        res97[0]();
+
+
+    </script>
+</body>
+
+</html>
