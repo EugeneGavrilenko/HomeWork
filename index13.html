@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>JAVASCRIPT HW13</title>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <script>
+        // ЗАДАНИЯ ДЛЯ РАЗМИНКИ!!!!!!)))
+
+        //1) Есть участок кода! обернуть в try catch нужный участок кода и выбросить ошибку если getResult возвращает undefined
+        console.log('1 задание');
+        function getResult() {
+            var obj = {
+                name: 'Sergei',
+                lastName: 'Shakhov'
+            }
+            return
+            obj;
+        }
+        try {
+            const a = getResult();
+            if (a === undefined) throw new Error('You f@#ked up here');
+            console.log('RESULT', a);
+        } catch (e) {
+            console.log('Big mistake bro', e);
+        }
+
+        //2) исправить код чтобы консоль логи показывали от 0 до 10, и написать почему сейчас выводит десять десяток!!
+        for (let i = 0; i <= 10; i++) {             //выводит 10 десяток потому что для var одна глоб.переменная,
+            setTimeout(() => console.log(i), 0);   //которая будет меняться и для всех setTimeout'ов i будет одинаковой
+        }
+
+        // 3) Есть код!! В какой последовательности выполнится!
+        console.log('3 задание');
+        function getDatas() {
+            return [
+                {
+                    name: "Vasia"
+                },
+                {
+                    name: "Boria"
+                },
+                {
+                    name: "Misha"
+                },
+            ]
+        }
+        const res = getDatas();
+        console.log('RES', res);                           // 1    сначала выполняются все console.log, потом setTimeout
+        setTimeout(() => console.log('settimeout1'), 100); // 5
+        setTimeout(() => console.log('settimeout'), 10);   // 4
+        console.log('One');                                // 2
+        console.log('two');                                // 3
+
+        //4) Что выведет alert в setTimeOut
+        setTimeout(function () {
+            alert(i);                         // Цикл for первый попадает в стек.По окончанию цикла i=1000000. setTimeout
+        }, 100);                              // ожидает в WebAPI. Для var одна глобальная переменная, которая меняется
+        for (var i = 0; i < 1000000; i++) {   // с каждой итерацией, поэтому alert выведет 1000000
+        }
+
+
+        // 5) Есть функция funct! Сделать из нее функцию конструктор которая создает обьект со свойствами name lastName
+        console.log('5 задание');
+        function Funct(name, lastName) {
+            this.name = name;
+            this.lastName = lastName;
+        }
+        let construct = new Funct('Petia', 'Vasichkin');
+        console.log(construct);
+
+        // 6) Создать функцию конструктор, которая принимает обьект и берет только lastName и position и создает обьект с этих свойств
+        console.log('6 задание');
+        function Factory({lastName, position}) {
+            return {
+                lastName, position
+            }
+        }
+        let fact = new Factory({ name: 'Sergei', lastName: 'Shakhov', height: 188, position: 'Software developer' });
+        console.log(fact);
+
+
+        // 7) Сделайте так чтобы выболнялось settimeout1 RES RES1
+        // setTimeout(() => console.log('settimeout1'), 100);
+        // console.log('RES', res);
+        // console.log('RES1', res);
+        let newRes = new Promise((res, rej) => {
+            setTimeout(() => res('settimeout1'), 100)
+        });
+        newRes.then((data) => {
+            console.log(data);
+            console.log('RES', res);
+            console.log('RES1', res);
+        });
+
+
+        // 8) Есть код! Почему строчка с комментарием покажет {misha: NADUSHA}! Сделать так чтобы a.getObject();
+        // вернул {misha: 'misha'}
+        // то есть должны быть независимые обьекты!!
+        console.log('8 задание');
+        function newFactory(obj) {
+            var object = obj;
+            return {
+                getObject: function() {
+                    let copyOfObject = Object.assign({}, object);
+                    return copyOfObject;
+                }
+            }
+        }
+        var a = newFactory({misha: 'misha'});
+        var k = a.getObject();
+        k.misha = 'NADUSHA'; 
+        console.log(a.getObject()); // КОММЕНТАРИЙ!!! покажет NADUSHA
+    </script>
+</body>
+
+</html>
