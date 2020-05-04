@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JAVASCRIPT_HW14</title>
+</head>
+
+<body>
+    <script>
+        // ЗАДАНИЯ ДЛЯ РАЗМИНКИ!!!!!!)))
+
+        //1) Есть промис! что за параметры принимает функция? Зачем они? как вернуть обьект {id: 10, name: 'Sergei'} и 
+        // потом принять его с помощью функции промиса then? Как вернуть ошибку в промисе и потом ее перехватить?
+        const pr = new Promise(function (resolve, reject) { //resolve - успешное выполнение кода, reject - неуспешное
+            resolve({id: 10, name: 'Sergei'});              //выполнение кода(вернуть ошибку). Перехватить ошибку можно
+        });                                                 //функцией промиса catch
+        pr.then((data) => {
+            console.log(data)
+        }).catch((el) => {
+                console.log('Error', el)
+            });
+
+        //2) Есть код ! с помощью промисов написать таким образом чтобы выполнилось по порядку от одного до 5!
+        // На данный момент выполнятся setTimeout-ы вконце!!
+        let count1 = new Promise((resolve, reject) => {
+            setTimeout(()=> resolve('1'), 1300);
+        });
+        let count4 = new Promise((resolve, reject) => {
+            setTimeout(()=> resolve('4'), 300);
+        });
+        count1.then((data) => {
+            console.log(data);
+            console.log('2');
+            console.log('3');
+            return count4;
+        }).then((data1) => {
+            console.log(data1);
+            console.log('5');
+        });
+
+        //3) Есть код !  Нужно всего лишь написать комментарий что делает каждая из строчек!
+        const pr2 = new Promise(function (resolve, reject) {//объявляется const pr2, присваивается ей Promise. Promise принимает функцию с параметрами resolve, reject
+            resolve({id: 2})  //успешное выполнение кода, аналогично return {id: 2}
+        });
+        pr2.then((data) => data)//к объекту pr2 применяется функция then,которая принимает функцию с параметром data и возвращает data, т.е {id: 2}
+            .then((res) => {//then возвращает Promise, применяется метод then, с функцией и параметром res, в котором лежит data с предыдущего then'a
+                throw new Error('Something went wrong')//во время выполнения кода, ошибка привела к созданию и выбрасыванию объекта Error,
+            })  //с message'ом 'Something went wrong'
+            .catch((e) => console.log('ERROR', e));//перехватывается ошибка с помощью функции catch, с параметром "message" объекта Error
+       
+        // 4) Использую Promise.all получить массив из промисов и после чего отсортировать тот что возвращает массив!
+        const prom1 = new Promise(function (resolve, reject) {
+            resolve(10);
+        });
+        const prom2 = new Promise(function (resolve, reject) {
+            resolve({id: 3});
+        });
+        const prom3 = new Promise(function (resolve, reject) {
+            resolve([6, 2, 4, 6]);
+        });
+        Promise.all([prom1, prom2, prom3]).then(([firstEl, secondEl, thirdEl]) => {
+            console.log(thirdEl.sort((a, b) => a - b));
+        });
+
+
+        // 5) Есть роуты!! С помощью fetch
+        // https://playwithpromise.herokuapp.com/api/order-review/last - вернет обьект с id такой
+        // после чего используя id делаем другой запрос
+        // https://playwithpromise.herokuapp.com/api/order-review/getid/{id}
+        fetch('https://playwithpromise.herokuapp.com/api/order-review/last', {
+            method: 'GET',
+        }).then((data) => {
+            return data.json();
+        }).then((data1) => {
+            return fetch(`https://playwithpromise.herokuapp.com/api/order-review/getid/${data1._id}`);
+        });/*.then((data2) => {
+            return data2.json();
+        }).then((response) => {
+            console.log(response);
+        });*/   //для вывода результирующего запроса раскомментировать последние 2 then'a
+        
+    </script>
+</body>
+
+</html>
