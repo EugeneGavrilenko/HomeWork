@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JAVASCRIPT_HW16</title>
+</head>
+
+<body>
+    <script>
+        // ЗАДАНИЯ ДЛЯ РАЗМИНКИ!!!!!!)))
+        //1) Есть код ! с помощью async await реализуем правильную последовательность!!
+        // setTimeout(()=> console.log('1'), 1300);
+        // console.log('2')
+        // console.log('3')
+        // setTimeout(()=> console.log('4'), 300);
+        // console.log('5')
+        let num1 = new Promise((resolve, reject) => {
+            setTimeout(()=> resolve('1'), 1300);
+        });
+        let num4 = new Promise((resolve, reject) => {
+            setTimeout(()=> resolve('4'), 300);
+        });
+        async function OneToFive() {
+            let one = await num1;
+            console.log(one);
+            console.log('2');
+            console.log('3');
+            let four = await num4;
+            console.log(four);
+            console.log('5');
+        }
+        OneToFive();
+
+
+        // 2) Есть роуты!! Делаем через async await то что в предыдущей!только с небольшим усложнением
+        // Добавился третий роут. Результат второго запроса даст обьект в котором будет поле orderList.
+        // В поле orderList будет массив с обьектов, и в каждом обьекте будет поле productId.
+        // Использя  эти productId и 3-й роут, сделать Promise.all и получить массив с продуктов.
+        // https://playwithpromise.herokuapp.com/api/order-review/last - вернет обьект с id такой( 5d4762e02481a600174fb1ae )
+        // после чего используя id делаем другой запрос
+        // https://playwithpromise.herokuapp.com/api/order-review/getid/{id} 
+        // https://playwithpromise.herokuapp.com/api/order-system/product/{productId}
+
+        async function MyRequest() {
+            let firstRequest = await fetch('https://playwithpromise.herokuapp.com/api/order-review/last');
+            firstRequest = await firstRequest.json();
+
+            let secondRequest = await fetch(`https://playwithpromise.herokuapp.com/api/order-review/getid/${firstRequest._id}`);
+            secondRequest = await secondRequest.json();
+
+            // Из orderlist получаем массив Idproduct'ов
+            let productIdArray = secondRequest.orderList.map((el) => el.productId);
+
+            // Из Idproduct'ов получаем массив promise запросов каждого продукта
+            let promiseArray = productIdArray.map((prodId) => {
+                return fetch(`https://playwithpromise.herokuapp.com/api/order-system/product/${prodId}`);
+            });
+
+            // Ждём исполнения всех promis'ов для получения массива response'ов
+            let responseArray = await Promise.all(promiseArray);
+
+            // Из массива response'ов получаем массив promise'ов
+            let promiseArrayForResponse = responseArray.map((response) => {
+                return response.json();
+            });
+
+            // Ждём исполнения всех promise'ов для получения результатов
+            let resultArray = await Promise.all(
+                promiseArrayForResponse
+            );
+            console.log(resultArray);
+        }
+        MyRequest();
+        
+    </script>
+</body>
+
+</html>
