@@ -72,15 +72,11 @@
             {id: 10253, model: 'Bicycle', status: 'Closed'},
             {id: 14234, model: 'Bike', status: 'Closed'}
         ];
-        function getNewClaims() {
-            return { [this.id]: {id:this.id, model:this.model, status:this.status} }
-        }
-        let claims1 = {};
+        let newClaimsObject = {};
         for (let i = 0; i < claimss.length; i++) {
-            let q = getNewClaims.bind(claimss[i]);
-            claims1 = {...claims1, ...q()};
+            newClaimsObject = { ...newClaimsObject, ...{ [claimss[i].id]: claimss[i] } };
         }
-        console.log(claims1);
+        console.log(newClaimsObject);
 
         //4) Дан массив arr! Вернуть те которые в квадрате меньше самого большого значения
         console.log('4 задание');
