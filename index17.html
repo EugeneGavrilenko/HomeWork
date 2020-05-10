@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JAVASCRIPT_17HW</title>
+</head>
+
+<body>
+    <script>
+        // ЗАДАНИЯ ДЛЯ РАЗМИНКИ!!!!!!)))
+
+        
+        //1) Создать класс функция конструктор которого принимает два параметра position, salary, 
+        // также создать одно private поле positions = ['software developer', 'hr manager', 'project manager'], getter(get функция)!
+        // которая смотрит на поле positions, и если в position есть одно из перечисленных то возвращает true иначе false
+        console.log('1st task');
+        class Manager {
+            constructor(position, salary) {
+                this.position = position;
+                this.salary = salary;
+            }
+            #positions = ['software developer', 'hr manager', 'project manager'];
+            get checkPosition() {
+                return this.#positions.some((el) => el === this.position)
+            }
+        }
+        let pm = new Manager('project manager', 600);
+        console.log(pm.checkPosition);
+    
+
+        //2) Есть класс App! Добавить две функции одна из них устанавливает product(создает поле product обьект с полем name, price), вторая функция получает price 
+        // и одно статическое свойство yearOfIssue
+        console.log('2nd task');
+        class App {
+            constructor() {
+            };
+
+            set newProduct(product) {
+                return this.product = product;
+            }
+
+            get getPrice() {
+                return this.product.price;
+            }
+
+            static yearOfIssue = 2020;
+        }
+        const potato = new App();
+        potato.newProduct = {name: 'Розовая', price: 19};
+        console.log(potato.getPrice);
+       
+        // 3) Пишем свой split и join))!
+        console.log('3rd task');
+        function ownSplit(newString) {
+            let newArray = newString.split(' ');
+            return newArray;
+        }
+        console.log(ownSplit('Оставь мессагу без напрягу'));
+
+
+        function ownJoin(array, separ) {
+            let string = '';
+            for (let i = 0; i < array.length; i++) {
+                if (i !== array.length-1) {
+                    string = string + array[i] + separ;
+                } else {
+                    string = string + array[i];
+                }
+            }
+            return string;
+        }
+        console.log(ownJoin(['Оставь', 'мессагу', 'без', 'напрягу'], '.'));
+
+
+        // 4) Ну и на последок перепишем класс в вид самовыз функция которая возвращает функцию-конструктор
+        console.log('4th task');
+        // class NewApp {
+        //     constructor(object) {
+        //         this.object = object;
+        //     }
+        //     getObject() {
+        //         return object;
+        //     }
+        // }
+
+        let IifeApp = (function () {
+            function constructor (object) {
+                this.object = object;
+            }
+            constructor.prototype.getObject = function () {
+                return this.object;
+            };
+            return constructor;
+        })();
+        let rocket = new IifeApp('vozdux');
+        console.log(rocket);
+
+
+
+    </script>
+</body>
+
+</html>
