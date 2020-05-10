@@ -84,13 +84,13 @@
         // }
 
         let IifeApp = (function () {
-            function constructor (object) {
+            function Constructor (object) {
                 this.object = object;
             }
-            constructor.prototype.getObject = function () {
+            Constructor.prototype.getObject = function () {
                 return this.object;
             };
-            return constructor;
+            return Constructor;
         })();
         let rocket = new IifeApp('vozdux');
         console.log(rocket);
