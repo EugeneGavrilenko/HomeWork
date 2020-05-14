@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript_19HW</title>
+</head>
+<body>
+<script>
+        // ЗАДАНИЯ ДЛЯ РАЗМИНКИ!!!!!!)))
+
+        //1) Есть две функции конструктор! Нужно c помощью prototype сделать second родителем first!
+        console.log('1st task');
+        function A(name) {
+            this.name = name;
+        }
+        function B(lastName) {
+            this.lastName = lastName;
+        }
+        const second = new B('Shakhov');
+        A.prototype = second;
+        const first = new A('Sergei');
+        console.log(first);
+
+
+        //2) Есть обьекты. Необходимо сделать vasia родителем для petia, а petia для boria.
+        // ТО есть вася отец все отцов
+        console.log('2nd task');
+        const vasia = { m: 23};
+        const petia = { n: 2};
+        const boria = { q: 2};
+        boria.__proto__ = petia;
+        petia.__proto__ = vasia;
+        console.log(boria);
+
+
+        //3) Написать класс Product, который принимает три поля цена, название, количество. 
+        // Необходимо реализовать два метода, первый сравнивает два продукта и выводит строку
+        // в которой присутствует разница по цене и количеству. Второй метод принимает любое количество продуктов и возвращает общую цену.
+        console.log('3rd task');
+        class Product {
+            constructor(price, name, quantity) {
+                this.price = price;
+                this.name = name;
+                this.quantity = quantity;
+            }
+
+            static compareByPriceAndQuantity (firstProduct, secondProduct) {
+                const difPrice = firstProduct.price - secondProduct.price;
+                const difQuantity = firstProduct.quantity - secondProduct.quantity;
+                return `Difference in price is ${difPrice}, difference in quantity is ${difQuantity}`;
+            }
+
+            static totalPrice (...products) {
+                const arrPrices = products.map(el => el.price).reduce((prev, curr) => prev + curr, 0);
+                return `Products price is ${arrPrices}`;
+            }
+        }
+        const kartoxa = new Product(20, 'glazuxa', 5);
+        const kapusta = new Product(10, 'белая', 2);
+        const limon = new Product(100, 'filimon', 10);
+        console.log(Product.compareByPriceAndQuantity(limon, kapusta));
+        console.log(Product.totalPrice(limon, kapusta, kartoxa));
+
+
+        // 4) Необходимо написать класс, который принимает следующие поля
+        // name, lastName, age, quantity, salary, position, далее реализовываем методы на получение всех свойств.
+        // , пишем геттер, сеттер и что-там еще). 
+        
+        
+        // но если вы дочитали до этого момента то 4-е реализововать не нужно), а нужно сделать следующее.
+        //  встать со стула!....... делаем легенькую разминочку, и начинаем приседать ибо дз проверяться не будет). 20 раз достаточно). 
+        // и после этого скидываем мне дз.
+        
+    </script>
+</body>
+
+</html>
